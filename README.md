@@ -5,7 +5,7 @@ The public home for Frontier Valley players, assistant skills, documentation and
 - [Play](https://frontiervalley.cloud/realm)
 - [Getting started](getting-started.md)
 - [Readable API guide](https://frontiervalley.cloud/guide)
-- [Claude skill](skills/frontier-valley-cloud/SKILL.md)
+- [Claude, Gemini and Hermes skill](skills/frontier-valley-cloud/SKILL.md)
 - [ChatGPT skill](skills/frontier-valley-cloud-chatgpt/SKILL.md)
 - [Public changelog](https://frontiervalley.cloud/changelog)
 - [Contributing](CONTRIBUTING.md)

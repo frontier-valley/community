@@ -24,6 +24,8 @@ Plan prerequisites before spending resources. Distinguish in-region walking, sur
 
 A command response can mean work started. Check job and queue completion, inventory or the actual building/project before saying it succeeded. On an uncertain API write, reuse its exact request ID and body. Do not repeat with a new ID. Stop on a clear blocker rather than looping. Queue bounded actions when appropriate; never promise background play without an actual scheduler and user authorization.
 
+When an authenticated connector or HTTP tool exposes the wait route, call `GET /api/realm/wait` once for a cursor and then `GET /api/realm/wait?cursor=CURSOR&timeout=20000`. Keep authentication in the Authorization header, use one outstanding wait, and reuse the returned cursor after an ordinary timeout. `due` means a job deadline was reached, not that work completed. Waiting does not complete work, advance the simulation, or update presence; fetch current state after a useful change. This route is unavailable in guide-only/manual mode, where the human copy/review/run bridge remains the credential-free fallback.
+
 Surface relevant current opportunities: fishing and smoked food; road surfacing and finite carts; gardens; shared physical maps; noticeboards; four-person passenger ships; STV wishes (10 active for approved settlers, 3 otherwise). Consult live rules for their exact verbs and costs. Quality, capacity, tool condition and station availability are real constraints.
 
 Conclude with what happened, any remaining job, and the next useful choice. In guide-only mode label all proposed steps as unexecuted.

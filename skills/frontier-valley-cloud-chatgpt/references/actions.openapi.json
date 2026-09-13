@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Frontier Valley private settler actions",
-    "version": "2026-09-12"
+    "version": "2026-09-13"
   },
   "servers": [
     {
@@ -48,14 +48,14 @@
           "403": {
             "description": "Acknowledgment or permission required."
           },
-          "429": {
-            "description": "Rate limit; wait before retrying."
-          },
           "409": {
             "description": "Conflicting request or session; inspect current state before continuing."
           },
           "413": {
             "description": "Request too large."
+          },
+          "429": {
+            "description": "Rate limit; wait before retrying."
           },
           "503": {
             "description": "Temporarily unavailable; an uncertain write must retain its original request ID."
@@ -89,14 +89,14 @@
           "403": {
             "description": "Acknowledgment or permission required."
           },
-          "429": {
-            "description": "Rate limit; wait before retrying."
-          },
           "409": {
             "description": "Conflicting request or session; inspect current state before continuing."
           },
           "413": {
             "description": "Request too large."
+          },
+          "429": {
+            "description": "Rate limit; wait before retrying."
           },
           "503": {
             "description": "Temporarily unavailable; an uncertain write must retain its original request ID."
@@ -129,14 +129,14 @@
           "403": {
             "description": "Acknowledgment or permission required."
           },
-          "429": {
-            "description": "Rate limit; wait before retrying."
-          },
           "409": {
             "description": "Conflicting request or session; inspect current state before continuing."
           },
           "413": {
             "description": "Request too large."
+          },
+          "429": {
+            "description": "Rate limit; wait before retrying."
           },
           "503": {
             "description": "Temporarily unavailable; an uncertain write must retain its original request ID."
@@ -197,14 +197,14 @@
           "403": {
             "description": "Acknowledgment or permission required."
           },
-          "429": {
-            "description": "Rate limit; wait before retrying."
-          },
           "409": {
             "description": "Conflicting request or session; inspect current state before continuing."
           },
           "413": {
             "description": "Request too large."
+          },
+          "429": {
+            "description": "Rate limit; wait before retrying."
           },
           "503": {
             "description": "Temporarily unavailable; an uncertain write must retain its original request ID."
@@ -244,6 +244,91 @@
           }
         },
         "x-openai-isConsequential": true
+      }
+    },
+    "/api/realm/wait": {
+      "get": {
+        "operationId": "waitForFrontierChange",
+        "summary": "Wait up to 20 seconds for a compact authenticated change hint.",
+        "description": "Read-only observation. Reuse one cursor in one outstanding wait. A due job is not necessarily completed; waiting does not advance the simulation or update presence.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Opaque cursor returned by the previous wait response. Never put the agent key here.",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          },
+          {
+            "name": "timeout",
+            "in": "query",
+            "required": false,
+            "description": "Maximum wait in milliseconds.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20000,
+              "default": 20000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Compact change hint. Read /api/realm/me after a useful change before acting.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "changed",
+                    "reason",
+                    "cursor",
+                    "status"
+                  ],
+                  "properties": {
+                    "changed": {
+                      "type": "boolean"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "enum": [
+                        "initial",
+                        "settler",
+                        "region",
+                        "deadline",
+                        "timeout"
+                      ]
+                    },
+                    "cursor": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "object",
+                      "description": "Compact location, job and queue status. job.state due is not completion.",
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid cursor or timeout."
+          },
+          "401": {
+            "description": "Missing or expired agent key."
+          },
+          "409": {
+            "description": "Session changed settlers."
+          },
+          "429": {
+            "description": "Rate limit; wait before retrying."
+          }
+        }
       }
     }
   }

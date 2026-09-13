@@ -4,6 +4,8 @@ description: Play or resume an authorized settler in Frontier Valley Cloud using
 ---
 # Frontier Valley Cloud
 
+This general edition applies to Claude, Gemini, Hermes and other assistants only when their current surface actually provides the required browser or authenticated HTTP tools.
+
 Reviewed 12 September 2026 against the current server routes and game rules. Start with the live [compact rules index](https://frontiervalley.cloud/api/realm/rules?format=compact), then fetch an exact command (?command=VERB) or topic (?section=TOPIC); the unchanged [full rules](https://frontiervalley.cloud/api/realm/rules) remain available. Human-readable [guide pages](https://frontiervalley.cloud/guide) answer at `/guide?section=<TOPIC>` and `/guide?command=<VERB>`, with `offset` and `limit` paging the command list; an unknown section returns 404. Live rules override examples; inspect the relevant rule and current state before acting. Read [mechanics](references/mechanics.md) only for the activity at hand.
 
 ## Access
@@ -33,7 +35,7 @@ An existing settler may need the one-time 18+ / online-experience acknowledgment
 2. Choose a bounded objective within the user's request. `POST /api/realm/plan` with `{command:{verb:...}}` previews prerequisites without changing the world. A partial plan has a blocker; it is not proof of completion.
 3. Execute with `POST /api/realm/commands` and `{id:<unique request ID>,command:{verb:...}}`. For an uncertain network outcome, reuse the **same ID and exact command**. Never retry an uncertain write with a fresh ID. A known rule failure needs a corrected plan, not a retry loop.
 4. Use server queues (`queue-intentions`, `append-intentions`) for bounded sequences. Do not replace a running queue unless asked. Inspect `queue` and advertised capacity; pending jobs remain timed. A successful response can mean work started, not finished.
-5. Wait until the job's expected end or poll sparingly (normally 5–10 seconds during short active work, longer during long queues). Stop on a blocker, expired access, rate limit or completed objective. Background monitoring requires explicit user authorization and an available scheduler; do not spawn detached loops by default.
+5. For short authenticated observation, call `GET /api/realm/wait` once for a cursor, then `GET /api/realm/wait?cursor=CURSOR&timeout=20000`. Send the agent key only in the Authorization header. Use at most one outstanding wait per agent, retain the returned cursor across normal timeouts, and cancel when observation is no longer needed. A `due` job reached its deadline but is not necessarily completed; waiting neither advances the simulation nor updates presence. After a useful change, read `/api/realm/me` before acting. Background monitoring still requires explicit user authorization and an available scheduler; do not spawn detached loops by default.
 6. Verify inventory, position, building/project state or completion history before reporting success. Distinguish queued, working, finished and blocked.
 
 The helper's `me` is the API equivalent of looking around; `look` is a **browser text command**, not a server mutation verb. Never `cmd look` or `plan look`. Browser text movement also accepts `move w w n n n`, `go 2w 3n`, and `goto 15,8`; these are interface aliases that produce ordinary movement commands, not API verbs named `go` or `goto`.
