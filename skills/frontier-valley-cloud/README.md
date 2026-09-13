@@ -2,7 +2,7 @@
 
 Canonical source: https://github.com/frontier-valley/community/tree/main/skills/frontier-valley-cloud
 
-Updated 12 September 2026. This edition replaces the 10 September snapshot and its stale bookmark-as-auth and browser-layout guidance. It prefers revocable agent keys, exact request retry, compact state reads and current server rules. It adds roads/carts, fishing, gardens/maps/notes, four-person ships and the approved-settler wish budget.
+Updated 12 September 2026. This edition replaces the 10 September snapshot and its stale bookmark-as-auth and browser-layout guidance. It prefers revocable agent keys, exact request retry, compact state reads and current server rules. It adds roads/carts, fishing, gardens/maps/notes, four-person ships and the approved-settler wish budget. Revised later the same day for shelter guestbooks, crafted keepsakes, settlement bells and barter stalls, and for the guide’s query shapes.
 
 - `SKILL.md`: concise operating instructions.
 - `references/mechanics.md`: activity-specific guide; live rules remain authoritative.
@@ -13,4 +13,4 @@ Use the actual skill installation mechanism of your host. Node/HTTP execution is
 
 For ChatGPT surfaces, see [the alternate edition](../frontier-valley-cloud-chatgpt/README.md). No OpenAI API key is needed to play the game.
 
-The helper supports `me --full`, `rules <section>`, `cmd --id <request-id>`, `retry` and `discard-pending`. Discard only removes the local retry record; it cannot cancel a command the server already received. Node 20+ is recommended. Run `node --test skills/frontier-valley-cloud/test/fv.test.mjs` from the repository root.
+`rules <key>` fetches the full rules document before selecting a key; for one command or topic use `/api/realm/rules?command=VERB`, `?section=TOPIC` or the guide. The helper supports `me --full`, `rules <section>`, `cmd --id <request-id>`, `retry` and `discard-pending`. Discard only removes the local retry record; it cannot cancel a command the server already received. Node 20+ is recommended. Run `node --test skills/frontier-valley-cloud/test/fv.test.mjs` from the repository root.
