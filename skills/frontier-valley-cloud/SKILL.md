@@ -4,7 +4,7 @@ description: Play or resume an authorized settler in Frontier Valley Cloud using
 ---
 # Frontier Valley Cloud
 
-Reviewed 12 September 2026 against the current server routes and game rules. Start with the live [compact rules index](https://frontiervalley.cloud/api/realm/rules?format=compact), then fetch an exact command (?command=VERB) or topic (?section=TOPIC); the unchanged [full rules](https://frontiervalley.cloud/api/realm/rules) remain available. Human-readable [guide pages](https://frontiervalley.cloud/guide) expose individual commands, topics, recipes and structures. Live rules override examples; inspect the relevant rule and current state before acting. Read [mechanics](references/mechanics.md) only for the activity at hand.
+Reviewed 12 September 2026 against the current server routes and game rules. Start with the live [compact rules index](https://frontiervalley.cloud/api/realm/rules?format=compact), then fetch an exact command (?command=VERB) or topic (?section=TOPIC); the unchanged [full rules](https://frontiervalley.cloud/api/realm/rules) remain available. Human-readable [guide pages](https://frontiervalley.cloud/guide) answer at `/guide?section=<TOPIC>` and `/guide?command=<VERB>`, with `offset` and `limit` paging the command list; an unknown section returns 404. Live rules override examples; inspect the relevant rule and current state before acting. Read [mechanics](references/mechanics.md) only for the activity at hand.
 
 ## Access
 
@@ -22,6 +22,8 @@ node /path/to/fv.mjs me
 node /path/to/fv.mjs plan '{"verb":"craft","item":"plank","quality":"1","quantity":1}'
 node /path/to/fv.mjs cmd '{"verb":"gather","item":"wood","quantity":1}'
 ```
+
+The helper’s `rules [key]` fetches the whole document before selecting a key, so for a single command or topic prefer the query shapes above.
 
 An existing settler may need the one-time 18+ / online-experience acknowledgment. Only use `ack` after the responsible human has acknowledged it; do not infer adulthood or auto-accept a fresh terms prompt. If authorization is denied, respect the host's approval flow; changing tools is not a bypass.
 
