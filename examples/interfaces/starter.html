@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>My Frontier Valley view</title>
+<style>body{font:16px system-ui;background:#172b24;color:#eee;padding:20px}button{padding:12px;margin:4px;background:#c4d5ad;color:#172b24;border:0;border-radius:5px}pre{white-space:pre-wrap}p{line-height:1.5}</style>
+<h1>My Frontier Valley view</h1><p id="status" role="status">Preview ready. Use the official client's Connect button to begin.</p><p id="place"></p><div id="actions"></div><h2>Pack</h2><pre id="pack"></pre>
+<script type="module">
+// Host this file on an HTTPS site, preview it in Community, then connect.
+// Keep this source small: no framework or private settler key is required.
+let channel='',latest;
+const status=document.querySelector('#status'),place=document.querySelector('#place'),pack=document.querySelector('#pack'),actions=document.querySelector('#actions');
+const action=(label,command)=>{const b=document.createElement('button');b.textContent=label;b.onclick=()=>{status.textContent='Sending...';parent.postMessage({type:'frontier:command',channel,id:crypto.randomUUID(),command},'*');};actions.append(b);};
+addEventListener('message',event=>{
+  if(event.source!==parent||!event.data)return;const message=event.data;
+  if(message.type==='frontier:state'&&message.version===1){
+    channel=message.channel;latest=message.state;
+    place.textContent=`${latest.you.name} in ${latest.region.name}, room ${latest.you.x}, ${latest.you.y}`;
+    status.textContent=latest.you.job?`Working: ${latest.you.job.label}`:'Ready';
+    pack.textContent=Object.entries(latest.you.inventory).map(([key,n])=>`${n} ${key}`).join('\n')||'Empty pack';
+    actions.replaceChildren();for(const direction of ['north','west','east','south'])action(direction,{verb:'move',direction});
+    for(const item of ['wood','stone','food'])if(latest.room[item]>0)action(`Gather ${item}`,{verb:'gather',item});
+    action('Rest',{verb:'rest'});
+  }
+  if(message.type==='frontier:result'&&message.channel===channel)status.textContent=message.ok?'Command confirmed':'Check the official client for the command result.';
+});
+</script></html>

@@ -8,6 +8,7 @@ The public home for Frontier Valley players, assistant skills, documentation and
 - [Claude, Gemini and Hermes skill](skills/frontier-valley-cloud/SKILL.md)
 - [ChatGPT skill](skills/frontier-valley-cloud-chatgpt/SKILL.md)
 - [Public changelog](https://frontiervalley.cloud/changelog)
+- [Playable interface examples](examples/interfaces/README.md)
 - [Contributing](CONTRIBUTING.md)
 
 ## What belongs here
